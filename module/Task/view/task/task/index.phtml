@@ -1,0 +1,49 @@
+<?php
+$title = 'My task list';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p><a href="<?php echo $this->url('task', array(
+        'action'=>'add'));?>">Add new item</a></p>
+
+
+<table class="table">
+<tr>
+    <th>Task</th>
+    <th>Created</th>
+    <th>Completed?</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($this->tasks as $task): ?>
+<tr>
+    <td>
+        <a href="<?php echo $this->url('task',
+            array('action'=>'edit', 'id' => $task->getId()));?>">
+            <?php echo $this->escapeHtml($task->getTitle()); ?></a>
+    </td>
+    <td><?php echo $this->escapeHtml($task->getCreated()); ?></td>
+    <td><?php echo $task->getCompleted() ? 'Yes' : 'No'; ?></td>
+    <td>
+        <a href="<?php echo $this->url('task',
+            array('action'=>'del', 'id' => $task->getId()));?>">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
+<hr/>
+
+ <?php
+ // add at the end of the file after the table
+ echo $this->paginationControl(
+     // the paginator object
+     $this->tasks,
+     // the scrolling style
+     'sliding',
+     // the partial to use to render the control
+     array('partial/paginator.phtml', 'Task'),
+     // the route to link to when a user clicks a control link
+     array(
+         'route' => 'task'
+     )
+ );
+ ?>
