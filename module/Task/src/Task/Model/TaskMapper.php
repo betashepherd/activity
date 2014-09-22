@@ -22,20 +22,24 @@ class TaskMapper {
     }
     
     public function fetchAll($paginated = false) {
-        $select = $this->sql->select();
-        $select->order(array('completed ASC', 'created ASC'));
-        #$statement = $this->sql->prepareStatementForSqlObject($select);
-        #$results = $statement->execute();
-        
-        $taskEntity = new TaskEntity();
-        $hydrator = new ClassMethods();
-        $resultset = new HydratingResultSet($hydrator, $taskEntity);
-        $paginatorAdapter = new DbSelect($select, $this->dbAdapter, $resultset);
-        
-        return new Paginator($paginatorAdapter);
-	
-        #$resultset->initialize($results);
-        #return $resultset;
+    	//create sql select
+    	$select = $this->sql->select();
+    	$select->order(array('completed ASC', 'created ASC'));
+    	
+    	//init task entity and hydrator
+    	$taskEntity = new TaskEntity();
+    	$hydrator = new ClassMethods();
+    	$resultset = new HydratingResultSet($hydrator, $taskEntity);
+    	
+    	if($paginated) { // paginated
+    		$paginatorAdapter = new DbSelect($select, $this->dbAdapter, $resultset);
+    		return new Paginator($paginatorAdapter);
+    	}else {
+    		$statement = $this->sql->prepareStatementForSqlObject($select);
+    		$results = $statement->execute();
+    		$resultset->initialize($results);	
+    		return $resultset;
+    	}
     }
     
     public function saveTask(TaskEntity $task) {

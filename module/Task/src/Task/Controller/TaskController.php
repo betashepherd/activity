@@ -13,10 +13,10 @@ class TaskController extends AbstractActionController
     
     public function indexAction()
     {
-        $tasks = $this->getTaskMapper()->fetchAll();
+        $tasks = $this->getTaskMapper()->fetchAll(true);
         $tasks->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         
-        $tasks->setItemCountPerPage(2);
+        $tasks->setItemCountPerPage(1);
         
         return new ViewModel(
             array('tasks' => $tasks)
