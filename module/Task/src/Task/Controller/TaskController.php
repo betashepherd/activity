@@ -1,12 +1,11 @@
 <?php
 
 /**
- * activity controller
- * 
+ * activity controller 
  * @author rap
  * @copyright www.activity.com
- * @version $Id$
  */
+
 namespace Task\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
